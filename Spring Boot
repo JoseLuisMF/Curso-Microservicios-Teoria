@@ -1,0 +1,33 @@
+Introduccion
+
+Framework orientado a la configuracion y construccion de proyectos de la familia spring basado en Convention-Over-Configuration, por lo que minimiza la cantidad de codigode configuracion de las aplicaciones.
+
+Afecta principalmente a dos aspectos de los proyectos:
+-Configuracion de dependencias: Sigue empleando Maven o Gradle para configurar las dependencias del proyecto, abstrae las versiones de las Apis y proporciona un conjunto de librerias que ya estan probadas trabajando juntas.
+-Configuraciondelas Apis:Viene con un diseño de preconfiguracion que se puede modificar o añadir dependencias u otras caracteristicas.
+
+Ademass proporciona otras herramientas como la consola Spring Boot CLI y Actuator.
+
+Dependencia Spring Boot Dependencies
+
+Esta dependencia permite hacer el trabajo sucio para manejar el ciclo de vida de un proyecto springnormal, pero normalmente se precisaran otras dependencias, para ello Spring Boot ofrecelos Starters.
+@SpringBootApplication
+Esta anotacion es la suma de tres:
+-@Configuration
+-@ComponentScan
+-@EnableAtoConfiguration
+
+Uso de plantillas
+
+Los proyectos Spring Boot Web vienen configuradospara emplear plantillas, basta con añadir el starteer del motor deseado y definir las plantillasenla capeta src/main/resources/templates. Entre los mas importantes son:
+
+-Thymeleaf: Motor de plantillas que se basa en la instrumentaizacion de html con atributos obtenidos dl esquema th
+-JSP
+-Recursos estaticos: HTML, js, css...Se debe incluir en las siguientes rutas:
+  -src/main/resources/META-INF/resources
+  -src/main/resources/resources
+  -src/main/resources/static
+  -src/main/resources/public
+-Webjars: Maven Repository
+
+Recopilacion de metricas

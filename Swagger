@@ -1,0 +1,15 @@
+Introduccion
+
+Swagger es un marco de software de código abierto respaldado por un gran ecosistema de herramientas que ayuda a los desarrolladores a diseñar, construir, documentar y consumir servicios web RESTful . Si bien la mayoría de los usuarios identifican Swagger por la herramienta Swagger UI, el conjunto de herramientas Swagger incluye soporte para documentación automatizada, generación de código y generación de casos de prueba.
+
+Uso
+
+-Desarrollando APIs 
+Al crear API, las herramientas Swagger se pueden usar para generar automáticamente un documento Open API basado en el código mismo. Esto incorpora la descripción de la API en el código fuente de un proyecto y se denomina informalmente desarrollo de API de código primero o de abajo hacia arriba.
+Alternativamente, usando Swagger Codegen , los desarrolladores pueden desacoplar el código fuente del documento Open API y generar código de cliente y servidor directamente desde el diseño. Esto hace posible diferir el aspecto de codificación.
+
+-Interactuando con APIs 
+Usando el proyecto Swagger Codegen, los usuarios finales generan SDK de clientes directamente desde el documento OpenAPI, reduciendo la necesidad de código de cliente generado por humanos. A partir de agosto de 2017, el proyecto Swagger Codegen admite más de 50 idiomas y formatos diferentes para la generación del SDK del cliente.
+
+-Documentación de API 
+Cuando se describe en un documento de OpenAPI, las herramientas de código abierto de Swagger se pueden usar para interactuar directamente con la API a través de la interfaz de usuario de Swagger . Este proyecto permite conexiones directamente a API en vivo a través de una interfaz de usuario interactiva basada en HTML . Las solicitudes se pueden hacer directamente desde la interfaz de usuario y las opciones exploradas por el usuario de la interfaz.

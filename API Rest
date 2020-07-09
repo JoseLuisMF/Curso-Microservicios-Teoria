@@ -30,3 +30,125 @@ Ventajas que ofrece REST para el desarrollo
 2.     Visibilidad, fiabilidad y escalabilidad. La separación entre cliente y servidor tiene una ventaja evidente y es que cualquier equipo de desarrollo puede escalar el producto sin excesivos problemas. Se puede migrar a otros servidores o realizar todo tipo de cambios en la base de datos, siempre y cuando los datos de cada una de las peticiones se envíen de forma correcta. Esta separación facilita tener en servidores distintos el front y el back y eso convierte a las aplicaciones en productos más flexibles a la hora de trabajar.
 
 3.     La API REST siempre es independiente del tipo de plataformas o lenguajes: la API REST siempre se adapta al tipo de sintaxis o plataformas con las que se estén trabajando, lo que ofrece una gran libertad a la hora de cambiar o probar nuevos entornos dentro del desarrollo. Con una API REST se pueden tener servidores PHP, Java, Python o Node.js. Lo único que es indispensable es que las respuestas a las peticiones se hagan siempre en el lenguaje de intercambio de información usado, normalmente XML o JSON.
+
+
+Diseño y desarrollo de API REST de gran utilidad
+
+
+Hay varias convenciones que seguimos en Hashmap al diseñar nuestras API REST, para asegurarnos de cumplir con las expectativas mencionadas anteriormente para nuestro desarrollo de aceleradores y nuestros compromisos de consultoría .
+Estas convenciones son las siguientes:
+
+1. Use sustantivos en URI
+Las API REST deben estar diseñadas para Recursos, que pueden ser entidades o servicios, etc., por lo tanto, siempre deben ser sustantivos. Por ejemplo, en lugar de / createUser use / users
+
+2. Plurales o singulares
+En general, preferimos usar plurales, pero no existe una regla estricta de que uno no pueda usar singular para el nombre del recurso. La ideología detrás del uso de plurales es:
+Estamos operando en un recurso de la colección de recursos, por lo que para representar la colección usamos plural
+Por ejemplo, en el caso de ...
+GET / usuarios / 123
+el cliente solicita recuperar un recurso de la colección de usuarios con el ID 123. Al crear un recurso, queremos agregar un recurso a la colección actual de recursos, por lo que la API se ve como la siguiente ...
+POST / usuarios
+
+3. Deje que el verbo HTTP defina la acción
+Según el punto n. ° 1 anterior, las API solo deben proporcionar nombres para los recursos y dejar que los verbos HTTP (GET, POST, PUT, DELETE) definan la acción que se realizará en un recurso.
+
+4. No use indebidamente los métodos seguros ( idempotencia )
+Los métodos seguros son métodos HTTP que devuelven la misma representación de recursos, independientemente de cuántas veces llame el cliente. Los métodos GET, HEAD, OPTIONS y TRACE se definen como seguros, lo que significa que solo están destinados a recuperar datos y no deberían cambiar el estado de un recurso en un servidor. No use GET para eliminar contenido, por ejemplo ...
+GET / users / 123 / delete
+No es que esto no se pueda implementar, pero la especificación HTTP se viola en este caso.
+Utilice los métodos HTTP de acuerdo con la acción que debe realizarse.
+
+5. Describa la jerarquía de recursos a través de URI
+Si un recurso contiene recursos secundarios, asegúrese de representarlo en la API para hacerlo más explícito. Por ejemplo, si un usuario tiene publicaciones y queremos recuperar una publicación específica por usuario, la API se puede definir como GET / users / 123 / posts / 1 que recuperará Publicación con ID 1 por usuario con ID 123
+
+6. Versión de sus API
+El control de versiones de las API siempre ayuda a garantizar la compatibilidad con versiones anteriores de un servicio al tiempo que agrega nuevas funciones o actualiza la funcionalidad existente para nuevos clientes. Existen diferentes escuelas de pensamiento para versionar su API, pero la mayoría de ellas se dividen en dos categorías a continuación:
+Encabezados:
+Hay 2 formas de especificar la versión en los encabezados:
+Cabecera personalizada:
+La adición de una clave de encabezado X-API-VERSION personalizada (o cualquier otro encabezado de elección) por parte del cliente puede ser utilizada por un servicio para enrutar una solicitud al punto final correcto
+Aceptar encabezado
+Usando aceptar encabezado para especificar su versión como
+=> Aceptar: application / vnd.hashmapinc.v2 + json
+
+URL:
+Incruste la versión en la URL, como
+POST / v2 / usuarios
+Preferimos usar el método de URL para el control de versiones, ya que brinda una mejor visibilidad de un recurso al mirar la URL. Algunos pueden argumentar que la URL se refiere al mismo recurso independientemente de la versión y dado que la representación de la respuesta puede o no cambiar después del versionado, ¿cuál es el punto de tener una URL diferente para el mismo recurso?
+No estoy abogando por un enfoque sobre otro aquí y, en última instancia, el desarrollador debe elegir su forma preferida de mantener las versiones.
+
+7. Representación de devolución
+Los métodos POST, PUT o PATCH, utilizados para crear un recurso o actualizar campos en un recurso, siempre deben devolver la representación actualizada del recurso como respuesta con el código de estado apropiado como se describe en otros puntos.
+POST si tiene éxito para agregar un nuevo recurso debe devolver el código de estado HTTP 201 junto con el URI del recurso recién creado en el encabezado de ubicación (según la especificación HTTP)
+
+8. Filtrar, buscar y ordenar
+No cree diferentes URI para recuperar recursos con parámetros de filtrado, búsqueda u ordenación. Intente mantener el URI simple y agregue parámetros de consulta para representar parámetros o criterios para obtener un recurso (tipo único de recurso)
+Filtración:
+Utilice los parámetros de consulta definidos en la URL para filtrar un recurso del servidor. Por ejemplo, si queremos obtener todas las publicaciones publicadas por el usuario, puede diseñar una API como:
+GET / users / 123 / posts? State = publicado
+En el ejemplo anterior, el estado es el parámetro de filtro
+Buscando:
+Para obtener los resultados con poderosas consultas de búsqueda en lugar de filtros básicos, uno podría usar múltiples parámetros en un URI para solicitar obtener un recurso del servidor.
+GET / users / 123 / posts? State = posted & ta = scala
+La consulta anterior busca publicaciones que se publican con la etiqueta Scala. Hoy es muy común que Solr se use como herramienta de búsqueda, ya que proporciona capacidades avanzadas para buscar un documento y puede diseñar su API como:
+GET / users / 123 / posts? Q = sometext & fq = state: publicado, ta: scala
+Esto buscará en las publicaciones el texto libre “sometext” (q) y filtrará los resultados en el estado fq tal como se publicó y con la etiqueta Scala.
+Clasificación:
+Los parámetros de clasificación ASC y DESC se pueden pasar en URL como:
+GET / users / 123 / posts? Sort = -updated_at
+Devuelve las publicaciones ordenadas en orden descendente de fecha y hora de actualización.
+
+9. HATEOAS
+H ypermedia A s T RANSFERENCIA E Ngine O f A plicación S Tate es una restricción de la arquitectura de la aplicación REST que la distingue de otras arquitecturas de aplicaciones de red.
+Proporciona facilidad de navegación a través de un recurso y sus acciones disponibles. De esta manera, un cliente no necesita saber cómo interactuar con una aplicación para diferentes acciones, ya que todos los metadatos se integrarán en las respuestas del servidor.
+Para entenderlo mejor, echemos un vistazo a la respuesta a continuación de recuperar usuario con id 123 del servidor:
+{
+"Nombre": "John Doe",
+"Enlaces": [
+{
+"Rel": "self",
+“Href”: “ http: // localhost: 8080 / users / 123 "
+},
+{
+"Rel": "publicaciones",
+"Href": " http: // localhost: 8080 / users / 123 / posts "
+},
+{
+"Rel": "dirección",
+"Href": " http: // localhost: 8080 / users / 123 / address "
+}
+]
+}
+A veces es más fácil omitir el formato de enlaces y especificar enlaces como campos de un recurso de la siguiente manera:
+{
+"Nombre": "John Doe",
+"Self": " http: // localhost: 8080 / users / 123 ",
+“Posts”: “ http: // localhost: 8080 / users / 123 ",
+"Dirección": " http: // localhost: 8080 / users / 123 / address "
+}
+No es una convención que deba seguir siempre, ya que depende de los campos / tamaño de los recursos y de las acciones que se pueden realizar en los recursos. Si los recursos contienen varios campos por los que el usuario puede no querer pasar, es una buena idea mostrar la navegación a los subrecursos y luego implementar HATEOAS.
+
+10. Autenticación y autorización sin estado
+Las API REST no deben tener estado. Cada solicitud debe ser autosuficiente y debe cumplirse sin conocimiento de la solicitud previa. Esto sucede en el caso de Autorizar una acción del usuario.
+Anteriormente, los desarrolladores almacenaban información del usuario en sesiones del lado del servidor, lo cual no es un enfoque escalable. Por esa razón, cada solicitud debe contener toda la información de un usuario (si es una API segura), en lugar de depender de solicitudes anteriores.
+Esto no limita las API a un usuario como persona autorizada, ya que también permite la autorización de servicio a servicio. Para la autorización del usuario, JWT (JSON Web Token) con OAuth2 proporciona una forma de lograrlo. Además, para la comunicación de servicio a servicio, intente pasar la clave API cifrada en el encabezado.
+
+11. Swagger para la documentación
+Swagger es una herramienta ampliamente utilizada para documentar las API REST que proporciona una forma de explorar el uso de una API específica, lo que permite a los desarrolladores comprender el comportamiento semántico subyacente. Es una forma declarativa de agregar documentación mediante anotaciones que genera un JSON que describe las API y su uso.
+Hemos creado un Arquetipo de Maven que puede ayudarlo a comenzar aquí: Arquetipo de Maven.
+
+12. Códigos de estado HTTP
+Use códigos de estado HTTP para proporcionar la respuesta a un cliente. Puede ser una respuesta de éxito o falla, pero debe definir qué significa el éxito o falla respectivo desde la perspectiva del servidor.
+A continuación se muestran las categorías de respuestas por sus códigos de estado:
+-2xx éxito
+-200 OK: devuelto por una operación exitosa GET o DELETE. PUT o POST también puede usar esto, si el servicio no desea devolver un recurso al cliente después de la creación o modificación.
+-201 Creado: Respuesta para una creación exitosa de recursos por una solicitud POST.
+-Redirección 3xx
+-304 no modificado: se utiliza si se implementa el encabezado de almacenamiento en caché HTTP.
+-Errores de cliente 4xx
+-400 Solicitud incorrecta: cuando un cuerpo de solicitud HTTP no se puede analizar. Por ejemplo, si una API espera un cuerpo en formato JSON para una solicitud POST, pero el cuerpo de la solicitud tiene un formato incorrecto.
+-401 Sin autorización: la autenticación no se realizó correctamente (o no se proporcionaron las credenciales) al acceder a la API.
+-403 Prohibido: si un usuario no está autorizado para realizar una acción, aunque la información de autenticación es correcta.
+-404 no encontrado: si el recurso solicitado no está disponible en el servidor.
+-405 Método no permitido: si el usuario intenta violar un contrato de API, por ejemplo, intenta actualizar un recurso utilizando un método POST.
+-Errores del servidor 5xx: Estos errores ocurren debido a fallas del servidor o problemas con la infraestructura subyacente.

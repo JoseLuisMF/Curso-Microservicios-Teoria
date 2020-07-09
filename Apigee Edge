@@ -1,0 +1,38 @@
+¿Qué es Apigee Edge?
+
+Apigee Edge es una plataforma para desarrollar y administrar API. Al presentar servicios con una capa proxy, Edge proporciona una abstracción o fachada para sus API de servicios de back-end y proporciona seguridad, limitación de velocidad, cuotas, análisis y más.
+
+Hacer que sus servicios estén disponibles en la web
+
+Las empresas de hoy quieren que sus servicios de back-end estén disponibles en la web para que estos servicios puedan ser consumidos por aplicaciones que se ejecutan en dispositivos móviles y computadoras de escritorio. Es posible que una empresa quiera exponer servicios que brinden información sobre precios y disponibilidad de productos, servicios de ventas y pedidos, servicios de seguimiento de pedidos y cualquier otro servicio requerido por las aplicaciones del cliente.
+
+Las empresas suelen exponer los servicios como un conjunto de puntos finales HTTP. Los desarrolladores de aplicaciones cliente realizan solicitudes HTTP a estos puntos finales. Según el punto final, el servicio puede devolver datos, formateados como XML o JSON, de vuelta a la aplicación cliente.
+
+Las aplicaciones cliente que consumen estos servicios se pueden implementar como aplicaciones independientes para un dispositivo móvil o tableta, como aplicaciones HTML5 que se ejecutan en un navegador, o como cualquier otro tipo de aplicación que pueda realizar una solicitud a un punto final HTTP y consumir cualquier dato de respuesta. Estas aplicaciones pueden ser desarrolladas y lanzadas por la misma compañía que expuso los servicios, o por desarrolladores de aplicaciones de terceros que hacen uso de servicios disponibles públicamente.
+
+Debido a que los proveedores hacen que sus servicios estén disponibles en la web, deben asegurarse de haber tomado todas las medidas necesarias para proteger y proteger sus servicios del acceso no autorizado. Como proveedor de servicios, considere:
+
+Seguridad: ¿Cómo controlará el acceso a sus servicios para evitar el acceso no autorizado?
+Compatibilidad: ¿Sus servicios funcionarán en diferentes plataformas y dispositivos?
+Medibilidad: ¿Cómo puede monitorear sus servicios para asegurarse de que estén disponibles?
+Monetización: ¿Cómo puede rastrear y facturar a los clientes por el acceso a sus servicios?
+Y muchas otras consideraciones
+Una vez que se ha lanzado una aplicación cliente que accede a cualquier servicio, se requiere que el proveedor del servicio se asegure de que esos servicios continúen funcionando con el tiempo a medida que agregan, modifican o eliminan esos servicios. El proveedor de servicios también debe tener una manera de mantener a los desarrolladores de aplicaciones al tanto de cualquier cambio en los servicios para garantizar que las aplicaciones cliente permanezcan sincronizadas con esos servicios.
+
+Los desarrolladores de aplicaciones cliente enfrentan desafíos cuando intentan consumir servicios de diferentes proveedores. Hay muchas tecnologías disponibles hoy para uso de un proveedor de servicios para exponer sus servicios. La misma aplicación cliente podría tener que usar un mecanismo para consumir un servicio de un proveedor, y un mecanismo diferente para consumir un servicio de un proveedor diferente. Los desarrolladores de aplicaciones incluso pueden enfrentar la situación en la que tienen que usar diferentes mecanismos para consumir servicios del mismo proveedor.
+
+
+Poner a disposición los servicios a través de Apigee Edge
+
+Apigee Edge le permite proporcionar acceso seguro a sus servicios con una API bien definida que es coherente en todos sus servicios, independientemente de la implementación del servicio. Una API consistente:
+
+Facilita a los desarrolladores de aplicaciones el consumo de sus servicios.
+Le permite cambiar la implementación del servicio de fondo sin afectar la API pública.
+Le permite aprovechar los análisis, la monetización, el portal para desarrolladores y otras funciones integradas en Edge.
+
+
+
+
+
+
+-->Mas informacion-->https://docs.apigee.com/api-platform/get-started/what-apigee-edge

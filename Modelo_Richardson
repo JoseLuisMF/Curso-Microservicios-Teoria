@@ -1,0 +1,87 @@
+Richardson utilizó tres factores para decidir la madurez de un servicio, es decir , URI , Métodos HTTP y HATEOAS (Hypermedia). Cuanto más emplee un servicio estas tecnologías, más maduro se considerará.
+
+Definicion URI
+El URI RESTful debe referirse a un recurso que es una cosa (sustantivo) en lugar de referirse a una acción (verbo) porque los sustantivos tienen propiedades que los verbos no tienen - similar a los recursos tienen atributos. Algunos ejemplos de un recurso son:
+
+-Usuarios del sistema.
+-Cuentas de usuario
+-Dispositivos de red, etc.
+y sus URI de recursos se pueden diseñar de la siguiente manera:
+
+http://api.example.com/device-management/managed-devices 
+http://api.example.com/device-management/managed-devices/{device-id} 
+http://api.example.com/ user-management / users / 
+http://api.example.com/user-management/users/{id}
+
+Definicion Metodos HTTP
+Las API REST le permiten desarrollar cualquier tipo de aplicación web que tenga todas las operaciones CRUD posibles (crear, recuperar, actualizar, eliminar). Las pautas REST sugieren el uso de un método HTTP específico en un tipo específico de llamada realizada al servidor (aunque técnicamente es posible violar esta pauta, pero no se recomienda).
+
+Utilice la información que se proporciona a continuación para encontrar un método HTTP adecuado para la acción realizada por API.
+
+Tabla de contenido
+-HTTP GET 
+-HTTP POST 
+-HTTP PUT 
+-HTTP DELETE 
+-HTTP PATCH 
+
+
+Definicion de HATEOAS
+
+HATEOAS (Hypermedia como el motor del estado de la aplicación) es una restricción de la arquitectura de la aplicación REST que mantiene la arquitectura de estilo RESTful única de la mayoría de las otras arquitecturas de aplicaciones de red. El término " hipermedia " se refiere a cualquier contenido que contenga enlaces a otras formas de medios como imágenes, películas y texto.
+
+El estilo arquitectónico REST le permite usar enlaces hipermedia en el contenido de la respuesta para que el cliente pueda navegar dinámicamente al recurso apropiado atravesando los enlaces hipermedia. Lo anterior es conceptualmente lo mismo que un usuario web que navega por las páginas web haciendo clic en los hipervínculos relevantes para lograr un objetivo final.
+
+Por ejemplo, la respuesta JSON dada a continuación puede ser de una API como HTTP GET http://api.domain.com/management/departments/10
+
+{
+    "departamentoId": 10,
+    "departmentName": "Administración",
+    "locationId": 1700,
+    "managerId": 200,
+    "Enlaces": [
+        {
+            "href": "10 / empleados",
+            "rel": "empleados",
+            "tipo": "OBTENER"
+        }
+    ]
+}
+En el ejemplo anterior, la respuesta devuelta por el servidor contiene enlaces hipermedia a los recursos de los empleados 10/employees, que el cliente puede recorrer para leer a los empleados que pertenecen al departamento.
+
+
+
+
+En este análisis, Richardson describió estos niveles de madurez de la siguiente manera:
+
+Nivel cero
+
+El nivel cero de madurez no utiliza ninguna de las capacidades de URI, métodos HTTP y HATEOAS.
+
+Estos servicios tienen un único URI y utilizan un único método HTTP (generalmente POST). Por ejemplo, la mayoría de los servicios basados en servicios web (WS - *) usan un único URI para identificar un punto final, y HTTP POST para transferir cargas útiles basadas en SOAP, ignorando efectivamente el resto de los verbos HTTP.
+
+Del mismo modo, servicios basados en XML-RPC que envían datos como XML antiguo sin formato (POX). Estas son la forma más primitiva de crear aplicaciones SOA con un único método POST y usar XML para comunicarse entre servicios.
+
+Nivel uno
+
+El nivel uno de madurez hace uso de URI fuera de URI, métodos HTTP y HATEOAS.
+
+Estos servicios emplean muchos URI pero solo un verbo HTTP, generalmente HTTP POST. Le dan a cada recurso individual en su universo un URI. Cada recurso se identifica por separado mediante un URI único, y eso los hace mejores que el nivel cero.
+
+Nivel dos
+
+El nivel dos de madurez utiliza URI y HTTP fuera de URI, Métodos HTTP y HATEOAS.
+
+Los servicios de nivel dos albergan numerosos recursos direccionables por URI. Dichos servicios admiten varios de los verbos HTTP en cada recurso expuesto: servicios Crear, Leer, Actualizar y Eliminar (CRUD). Aquí, el estado de los recursos, que generalmente representan entidades comerciales, se puede manipular a través de la red.
+
+Aquí, el diseñador de servicios espera que las personas se esfuercen por dominar las API, generalmente leyendo la documentación suministrada.
+
+El nivel 2 es el buen caso de uso de los principios REST, que recomiendan el uso de diferentes verbos basados en los métodos de solicitud HTTP y el sistema puede tener múltiples recursos.
+
+Nivel tres
+
+El nivel tres de madurez hace uso de los tres, es decir, URI y HTTP y HATEOAS .
+
+Este es el nivel más maduro del modelo de Richardson que fomenta la facilidad de descubrimiento y facilita que las respuestas se expliquen por sí mismas utilizando HATEOAS.
+
+El servicio lleva a los consumidores a través de un rastro de recursos, lo que provoca transiciones de estado de la aplicación como resultado.
